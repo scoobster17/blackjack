@@ -1,9 +1,10 @@
 import Deck from './equipment/cards/deck';
 
-// create a deck of cards utilising Deck class
+// create a deck of cards utilising Deck class (only 1 at the moment)
 var deck = new Deck();
 
-console.log(deck);
+// shuffle the deck to randomise order of dealing
+deck.shuffleDeck();
 
 // create a dealer with methods (class)
 

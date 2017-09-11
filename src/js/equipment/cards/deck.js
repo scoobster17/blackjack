@@ -10,6 +10,16 @@ class Deck {
 		this.cards = Deck.createDeck();
 	}
 
+	shuffleDeck() {
+		let shuffledDeck = [];
+		while (shuffledDeck.length !== this.cards.length) {
+			var randomCardId = Math.floor(Math.random() * this.cards.length);
+			var matches = shuffledDeck.filter(cardId => cardId === randomCardId);
+			if (!matches.length) shuffledDeck.push(randomCardId);
+		}
+		this.cards = shuffledDeck;
+	}
+
 	static createDeck() {
 		let id = 0;
 		let cards = [];
