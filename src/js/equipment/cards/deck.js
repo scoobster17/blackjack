@@ -7,10 +7,10 @@ const suits = ['Clubs', 'Diamonds', 'Hearts', 'Spades'];
  */
 class Deck {
 	constructor() {
-		this.cards = Deck.createDeck();
+		this.cards = Deck.create();
 	}
 
-	shuffleDeck() {
+	shuffle() {
 		let shuffledDeck = [];
 		while (shuffledDeck.length !== this.cards.length) {
 			var randomCardId = Math.floor(Math.random() * this.cards.length);
@@ -20,7 +20,7 @@ class Deck {
 		this.cards = shuffledDeck;
 	}
 
-	static createDeck() {
+	static create() {
 		let id = 0;
 		let cards = [];
 		suits.forEach((suit) => {
