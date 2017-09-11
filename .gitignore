@@ -1,0 +1,12 @@
+# Third party code
+node_modules/
+
+# Tools
+*.sublime*
+
+# Logs
+*.log
+
+# App generated code
+dist/css/
+dist/js/
