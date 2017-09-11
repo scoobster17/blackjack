@@ -9,9 +9,13 @@ window.deck = deck; // temp
 // shuffle the deck to randomise order of dealing
 deck.shuffle();
 
+// create a list of players for the game
+let participants = [];
+window.participants = participants; // temp
+
 // create a dealer with methods (class)
 const dealer = new Dealer(0);
-window.dealer = dealer; // temp
+participants.push(dealer);
 
 const dealCard = (person) => {
 	deck.cards = dealer.dealCard(person, deck.cards);
@@ -19,13 +23,14 @@ const dealCard = (person) => {
 
 // create a player with methods (class)
 const player = new Player(0);
-window.player = player; // temp
+participants.push(player);
 
 // pick cards, alternating between dealer and player until they have 2
-dealCard(dealer);
-dealCard(player);
-dealCard(dealer);
-dealCard(player);
+for (let i=0; i<=1; i++) {
+	for (let participant of participants) {
+		dealCard(participant);
+	}
+}
 
 // calculate total values and present user option to hit/stick
 
