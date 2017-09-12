@@ -15,89 +15,153 @@ deck.shuffle();
 let participants = [];
 window.participants = participants; // temp
 
+// create a player with methods (class)
+const player = new Player(1);
+participants.push(player);
+
 // create a dealer with methods (class)
+// comes after all players
 const dealer = new Dealer(0);
 participants.push(dealer);
-
-// create a player with methods (class)
-const player = new Player(0);
-participants.push(player);
 
 // TODO trigger with 'deal' button
 gameInProgress = true;
 
-const dealRoundOfCards = (cardsToDeal = 1) => {
-
-	// deal card function to utilise the dealer to distribute cards
-	const dealCard = (person) => {
-		deck.cards = dealer.dealCard(person, deck.cards);
-	};
-
-	let i = 1;
-
-	// deal cards, alternating between dealer and player until they have 2 each
-	do {
-		for (let participant of participants) {
-			dealCard(participant);
-			participant.playing = true;
-
-			// calculate total values and present user option to hit/stick
-			participant.cardTotal = 0;
-			for (let participantCard of participant.cards) {
-				if (participantCard.values.length > 1) {
-					participant.cardTotal += 11; // for now, onload will assume 11 to achieve blackjack on first deal
-				} else {
-					participant.cardTotal += participantCard.values[0];
-				}
-			}
-		}
-		i++;
-	} while (i <= cardsToDeal);
-}
-
-dealRoundOfCards(2);
+let winners = [];
+let stickers;
 
 // check game status, after cards have been dealt
-let winners = [];
+let checkGameStatus = (participant) => {
+	switch (true) {
 
-let checkGameStatus = () => {
-	for (let participant of participants) {
-		switch (true) {
+		case (participant.cardTotal < 21):
+			return;
+			break;
 
-			case (!participant.playing):
-				continue;
+		case (participant.cardTotal === 21):
+			winners.push(participant);
+			// participant.playing = false;
+			console.log(`${participant.id} wins with a score of ${participant.cardTotal}!`);
+			break;
+
+		case (participant.cardTotal > 21):
+			// participant.playing = false;
+			// check for ace, if have one lower value to 1
+			// if () {
+			// } else {
+				console.log(`${participant.id} is out of the game with a score of ${participant.cardTotal}.`);
+			// }
+			break;
+
+	}
+}
+
+// deal card function to utilise the dealer to distribute cards
+const dealCard = (person) => {
+	deck.cards = dealer.dealCard(person, deck.cards);
+};
+
+// calculate total values and present user option to hit/stick
+const calculateTotal = (participant) => {
+	participant.cardTotal = 0;
+	for (let participantCard of participant.cards) {
+		if (participantCard.values.length > 1) {
+			participant.cardTotal += 11; // for now, onload will assume 11 to achieve blackjack on first deal
+		} else {
+			participant.cardTotal += participantCard.values[0];
+		}
+	}
+}
+
+const dealNextCard = (participant) => {
+	console.log(round)
+	dealCard(participant);
+	calculateTotal(participant);
+	if (round > 1) checkGameStatus(participant);
+}
+
+let round = 1;
+
+const getCurrentPlayer = () => participants[playersDealtInRound];
+
+const requestMoveFromNextPlayer = () => {
+	console.log(playersDealtInRound)
+	let player = getCurrentPlayer();
+	console.log(player)
+	// if (player) {
+	console.log(`${player.id} do you want to hit or stick?`);
+	// } else if (Dealer) {
+	// 	deal if cardTotal under 17
+	// }
+}
+
+let playersDealtInRound;
+
+const startRound = () => {
+	playersDealtInRound = 0;
+	stickers = 0;
+	requestMoveFromNextPlayer();
+}
+
+const startGame = () => {
+	while (round <= 2) {
+		for (let participant of participants) {
+			dealNextCard(participant);
+		}
+		round++;
+	}
+	startRound();
+};
+startGame();
+
+// participant.playing = true;
+
+const endRound = () => {
+	if (winners.length) {
+		winners.forEach((winner) => {
+			console.log(`You win ${winner.id}`);
+		});
+	} else if (stickers = participants.length) {
+		// if everyone has stuck with their choice of card
+		// find highest score
+		const winner = participants.sort(() => {
+			return b.cardTotal - a-cardTotal;
+		})[0] <<<<<<< winner?
+	} else {
+		startRound();
+	}
+}
+
+// add event listeners for events above
+const buttons = document.querySelectorAll('.actions button');
+buttons.forEach((button) => {
+	button.addEventListener('click', (event) => {
+		console.log(event, event.target.getAttribute('data-action'))
+
+		// see if player wants to hit/stick
+		switch (event.target.getAttribute('data-action')) {
+
+			case 'stick':
+				stickers++;
+				playersDealtInRound++;
+				console.log(playersDealtInRound, participants.length)
+				if (playersDealtInRound < participants.length) {
+					requestMoveFromNextPlayer();
+				} else {
+					endRound();
+				}
 				break;
 
-			case (participant.cardTotal < 21):
-				continue; // TODO check hit/stick state
-				break;
-
-			case (participant.cardTotal === 21):
-				winners.push(participant);
-				break;
-
-			case (participant.cardTotal > 21):
-				participant.playing = false;
-				console.log(`${participant.id} is out of the game with a score of ${winner.cardTotal}.`);
+			case 'hit':
+				const currentPlayer = getCurrentPlayer();
+				dealNextCard(currentPlayer);
+				if (!winners.length) requestMoveFromNextPlayer();
 				break;
 
 		}
-	}
-	if (winners.length) winners.forEach((winner) => {
-		console.log(`${winner.id} wins with a score of ${winner.cardTotal}!`);
-	});
-}
 
-checkGameStatus();
-
-// add event listeners for events above
-/*const buttons = document.querySelectorAll('.actions button');
-buttons.forEach((button) => {
-	button.addEventListener('click', (event) => {
-		// player wants to hit/stick
-		// event.target.getAttribute('data-hit');
 	});
-});*/
+});
 
 // create a game class? holding situations to be in, controlling outcomes?
 // const game = new BlackjackGame();
