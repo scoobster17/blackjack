@@ -26,15 +26,17 @@ participants.push(player);
 // TODO trigger with 'deal' button
 gameInProgress = true;
 
-const dealRoundOfCards = (initial) => {
+const dealRoundOfCards = (cardsToDeal = 1) => {
 
 	// deal card function to utilise the dealer to distribute cards
 	const dealCard = (person) => {
 		deck.cards = dealer.dealCard(person, deck.cards);
 	};
 
+	let i = 1;
+
 	// deal cards, alternating between dealer and player until they have 2 each
-	for (let i=0; i <= (initial === true ? 2 : 1); i++) {
+	do {
 		for (let participant of participants) {
 			dealCard(participant);
 			participant.playing = true;
@@ -49,9 +51,11 @@ const dealRoundOfCards = (initial) => {
 				}
 			}
 		}
-	}
+		i++;
+	} while (i <= cardsToDeal);
 }
-dealRoundOfCards(true);
+
+dealRoundOfCards(2);
 
 // check game status, after cards have been dealt
 let winners = [];
