@@ -15,7 +15,9 @@ class Deck {
 		while (shuffledDeck.length !== this.cards.length) {
 			var randomCardId = Math.floor(Math.random() * this.cards.length);
 			var matches = shuffledDeck.filter(cardId => cardId === randomCardId);
-			if (!matches.length) shuffledDeck.push(randomCardId);
+			if (!matches.length) shuffledDeck.push(
+				this.cards.filter(card => card.id === randomCardId)[0]
+			);
 		}
 		this.cards = shuffledDeck;
 	}
