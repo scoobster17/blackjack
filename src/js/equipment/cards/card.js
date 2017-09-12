@@ -6,7 +6,7 @@ class Card {
 		this.id = id;
 		this.suit = suit;
 		if (index > 1 && index < 11) this.values = [index];
-		if (index > 11) this.values = [10];
+		if (index > 10) this.values = [10];
 		switch (index) {
 
 			case 1:

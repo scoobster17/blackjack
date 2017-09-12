@@ -29,10 +29,19 @@ participants.push(player);
 for (let i=0; i<=1; i++) {
 	for (let participant of participants) {
 		dealCard(participant);
+
+		// calculate total values and present user option to hit/stick
+		participant.cardTotal = 0;
+		for (let participantCard of participant.cards) {
+			if (participantCard.values.length > 1) {
+				participant.cardTotal += 11; // for now, onload will assume 11 to achieve blackjack on first deal
+			} else {
+				participant.cardTotal += participantCard.values[0];
+			}
+		}
 	}
 }
 
-// calculate total values and present user option to hit/stick
 
 // add event listeners for events above
 
