@@ -29,6 +29,7 @@ participants.push(player);
 for (let i=0; i<=1; i++) {
 	for (let participant of participants) {
 		dealCard(participant);
+		participant.playing = true;
 
 		// calculate total values and present user option to hit/stick
 		participant.cardTotal = 0;
@@ -42,6 +43,33 @@ for (let i=0; i<=1; i++) {
 	}
 }
 
+// check game status, after cards have been dealt
+let winners = [];
+for (let participant of participants) {
+	switch (true) {
+
+		case (!participant.playing):
+			continue;
+			break;
+
+		case (participant.cardTotal < 21):
+			continue; // TODO check hit/stick state
+			break;
+
+		case (participant.cardTotal === 21):
+			winners.push(participant);
+			break;
+
+		case (participant.cardTotal > 21):
+			participant.playing = false;
+			console.log(`${participant.id} is out of the game with a score of ${winner.cardTotal}.`);
+			break;
+
+	}
+}
+if (winners.length) winners.forEach((winner) => {
+	console.log(`${winner.id} wins with a score of ${winner.cardTotal}!`);
+});
 
 // add event listeners for events above
 
