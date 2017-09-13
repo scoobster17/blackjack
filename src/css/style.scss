@@ -2,3 +2,23 @@ body {
 	background-color: #044418;
 	color: red;
 }
+ul {
+	li {
+		margin-top: 50px;
+
+		li {
+			margin-top:0;
+		}
+	}
+}
+.actions {
+	overflow: hidden;
+
+	li {
+		float:left;
+
+		+ li {
+			margin-left:30px;
+		}
+	}
+}

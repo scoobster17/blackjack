@@ -14,22 +14,11 @@
 			<h1>Play Blackjack</h1>
 			<section>
 				<p>Press the button below to start a new game!</p>
-				<button>Deal</button>
+				<button id="new-game-trigger">Deal</button>
 			</section>
 			<section>
 				<h2>Table</h2>
-				<ul>
-					<li>
-						Dealer&apos;s Hand
-						<dl>
-							<dt>Cards</dt>
-								<dd>
-									<ul></ul>
-								</dd>
-							<dt>Total value</dt>
-								<dd>0</dd>
-						</dl>
-					</li>
+				<ul id="players">
 					<li>
 						Your Hand
 						<dl>
@@ -38,7 +27,18 @@
 									<ul></ul>
 								</dd>
 							<dt>Total value</dt>
-								<dd>0</dd>
+								<dd class="total">0</dd>
+						</dl>
+					</li>
+					<li>
+						Dealer&apos;s Hand
+						<dl>
+							<dt>Cards</dt>
+								<dd>
+									<ul></ul>
+								</dd>
+							<dt>Total value</dt>
+								<dd class="total">0</dd>
 						</dl>
 					</li>
 				</ul>
