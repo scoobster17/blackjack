@@ -30,6 +30,65 @@ gameInProgress = true;
 let winners = [];
 let stickers;
 
+const getCurrentPlayer = () => participants[playersDealtInRound];
+
+const requestMoveFromNextPlayer = () => {
+	let player = getCurrentPlayer();
+	// if (player) {
+	console.log(`${player.id} do you want to hit or stick?`);
+	// } else if (Dealer) {
+	// 	deal if cardTotal under 17
+	// }
+}
+
+
+const startRound = () => {
+	playersDealtInRound = 0;
+	stickers = 0;
+	if (!winners.length) {
+		requestMoveFromNextPlayer();
+	} else {
+		endRound();
+	}
+}
+
+const endRound = () => {
+	if (winners.length) {
+		winners.forEach((winner) => {
+			console.log(`You win ${winner.id}`);
+		});
+	} else if (stickers = participants.length) {
+		// if everyone has stuck with their choice of card
+		// find highest score
+		const participantsSortedByHighScore = participants
+			.sort((a, b) => b.cardTotal - a.cardTotal)
+			.filter(participant => participant.cardTotal < 22);
+		if (participantsSortedByHighScore.length) {
+			// more for when >1 player in future
+			const winnersByHighScore = participantsSortedByHighScore.filter((participant) => {
+				return participant.cardTotal === participantsSortedByHighScore[0].cardTotal;
+			});
+			alert(`${winnersByHighScore[0].id} wins with a score of ${winnersByHighScore[0].cardTotal}!`);
+		} else {
+			alert('Nobody won!')
+		}
+	} else {
+		startRound();
+	}
+}
+
+const hit = () => dealNextCard(getCurrentPlayer());
+
+const stick = () => {
+	stickers++;
+	playersDealtInRound++;
+	if (playersDealtInRound < participants.length) {
+		requestMoveFromNextPlayer();
+	} else {
+		endRound();
+	}
+};
+
 // check game status, after cards have been dealt
 let checkGameStatus = (participant) => {
 	switch (true) {
@@ -50,6 +109,7 @@ let checkGameStatus = (participant) => {
 			// if () {
 			// } else {
 				console.log(`${participant.id} is out of the game with a score of ${participant.cardTotal}.`);
+				stick();
 			// }
 			break;
 
@@ -74,34 +134,13 @@ const calculateTotal = (participant) => {
 }
 
 const dealNextCard = (participant) => {
-	console.log(round)
 	dealCard(participant);
 	calculateTotal(participant);
 	if (round > 1) checkGameStatus(participant);
 }
 
 let round = 1;
-
-const getCurrentPlayer = () => participants[playersDealtInRound];
-
-const requestMoveFromNextPlayer = () => {
-	console.log(playersDealtInRound)
-	let player = getCurrentPlayer();
-	console.log(player)
-	// if (player) {
-	console.log(`${player.id} do you want to hit or stick?`);
-	// } else if (Dealer) {
-	// 	deal if cardTotal under 17
-	// }
-}
-
 let playersDealtInRound;
-
-const startRound = () => {
-	playersDealtInRound = 0;
-	stickers = 0;
-	requestMoveFromNextPlayer();
-}
 
 const startGame = () => {
 	while (round <= 2) {
@@ -116,46 +155,20 @@ startGame();
 
 // participant.playing = true;
 
-const endRound = () => {
-	if (winners.length) {
-		winners.forEach((winner) => {
-			console.log(`You win ${winner.id}`);
-		});
-	} else if (stickers = participants.length) {
-		// if everyone has stuck with their choice of card
-		// find highest score
-		const winner = participants.sort(() => {
-			return b.cardTotal - a-cardTotal;
-		})[0] <<<<<<< winner?
-	} else {
-		startRound();
-	}
-}
-
 // add event listeners for events above
 const buttons = document.querySelectorAll('.actions button');
 buttons.forEach((button) => {
 	button.addEventListener('click', (event) => {
-		console.log(event, event.target.getAttribute('data-action'))
 
 		// see if player wants to hit/stick
 		switch (event.target.getAttribute('data-action')) {
 
 			case 'stick':
-				stickers++;
-				playersDealtInRound++;
-				console.log(playersDealtInRound, participants.length)
-				if (playersDealtInRound < participants.length) {
-					requestMoveFromNextPlayer();
-				} else {
-					endRound();
-				}
+				stick();
 				break;
 
 			case 'hit':
-				const currentPlayer = getCurrentPlayer();
-				dealNextCard(currentPlayer);
-				if (!winners.length) requestMoveFromNextPlayer();
+				hit();
 				break;
 
 		}
